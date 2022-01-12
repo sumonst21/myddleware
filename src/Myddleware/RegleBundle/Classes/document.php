@@ -1943,7 +1943,8 @@ class documentcore {
 			if ($direction == '-1') {
 				$sqlParams = "	SELECT 
 									source_id record_id,
-									Document.id document_id								
+									Document.id document_id,
+									Document.type document_type
 								FROM Document
 								WHERE  
 										Document.rule_id = :ruleRelateId 
@@ -1953,13 +1954,15 @@ class documentcore {
 									AND (
 											Document.global_status = 'Close' 
 										 OR Document.status = 'No_send'
-									)	 
+									)
+								ORDER BY source_date_modified DESC	
 								LIMIT 1";	
 			}
 			elseif ($direction == '1') {
 				$sqlParams = "	SELECT 
 									target_id record_id,
-									Document.id document_id
+									Document.id document_id,
+									Document.type document_type
 								FROM Document 
 								WHERE  
 										Document.rule_id = :ruleRelateId 
@@ -1970,6 +1973,7 @@ class documentcore {
 											Document.global_status = 'Close' 
 										 OR Document.status = 'No_send'
 									)	
+								ORDER BY source_date_modified DESC		
 								LIMIT 1";	
 			}
 			else {
@@ -2012,14 +2016,18 @@ class documentcore {
 						}
 					}
 				}
-			} else {	
+			} else {
 				$stmt = $this->connection->prepare($sqlParams);
 				$stmt->bindValue(":ruleRelateId", $ruleRelationship['field_id']);
 				$stmt->bindValue(":record_id", $record_id);
 				$stmt->execute();	   				
-				$result = $stmt->fetch();		
+				$result = $stmt->fetch();					
 			}
 			if (!empty($result['record_id'])) {
+				// If the latest valid document sent is a deleted one, then the target id can't be use as the record has been deleted from the target solution
+				if ($result['document_type'] == 'D') {
+					return null;
+				}
 				return $result;
 			}
 			return null;

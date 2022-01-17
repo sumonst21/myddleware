@@ -23,3 +23,12 @@ services:
   #     decorates: App\Solutions\wordpress
   #     decoration_on_invalid: ignore
   #     decoration_priority: 1
+
+# This doesn't work for now (throws an Exception saying the mother class doesn't exist when it does)
+  # custom_account_controller:
+      # class: App\Custom\Controller\CustomAccountController
+  App\Custom\Controller\CustomAccountController:
+      decorates: App\Controller\AccountController
+      arguments: ['@App\Custom\Controller\CustomAccountController.inner']
+      # arguments: ['@custom_account_controller.inner']
+      # tags: ['controller.service_arguments']

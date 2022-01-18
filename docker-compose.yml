@@ -1,21 +1,11 @@
 version: "3.0"
 services:
-  nginx:
-    image: nginx:latest
-    ports:
-      - "${EXTERNAL_PORT:-8020}:80"
-    volumes:
-      - .:/var/www
-      - ./docker/nginx:/etc/nginx/conf.d:ro
-    depends_on:
-      - php-fpm
-
-  php-fpm:
+  php:
     build:
       context: .
-      dockerfile: ./docker/php-fpm/Dockerfile
-    volumes:
-      - .:/var/www:cached
+      dockerfile: ./docker/php/Dockerfile
+    ports:
+      - "${EXTERNAL_PORT:-8020}:80"
     depends_on:
       - database
     env_file:
@@ -26,8 +16,6 @@ services:
       context: ./docker/db
       dockerfile: Dockerfile.mysql
     container_name: ${APP_NAME}_database
-    volumes:
-      - ./fixtures:/docker-entrypoint-initdb.d
     restart: always
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -48,7 +36,3 @@ services:
       PMA_PORT: ${DB_PORT}
       PMA_USER: ${DB_USERNAME}
       PMA_PASSWORD: ${DB_PASSWORD}
-
-volumes:
-  app_log:
-  nginx_log:

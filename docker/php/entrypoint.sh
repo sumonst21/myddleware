@@ -23,10 +23,10 @@ if [ "$1" = "composer" ]; then
 elif [ -n "$1" ]; then
     su www-data -s /bin/bash -c "$*"
 else
-    if pgrep "php-fpm" > /dev/null
+    if pgrep "php" > /dev/null
     then
         echo "Argument required"
     else
-        php-fpm
+        php
     fi
 fi

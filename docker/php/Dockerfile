@@ -1,59 +1,25 @@
 FROM php:apache
 
 COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN apt-get update && apt-get install -y \
-    wget git bash 
 
-# RUN apt-get update && apt-get install -y \ 
-#     zlib1g-dev libicu-dev wget git zip vim libxml2-dev libpng-dev \
-#     && docker-php-ext-configure intl \ 
-#     && docker-php-ext-install pdo pdo_mysql intl \
-#     && docker-php-ext-enable intl
+RUN apt-get update && apt-get install -y \
+    wget git bash libicu-dev
 
 # Get nodejs
 RUN curl -sL https://deb.nodesource.com/setup_14.x  | bash -
 
-# #zip
-# RUN apt-get install -y \
-#         libzip-dev \
-#         zip \
-#     && docker-php-ext-configure zip \
-#     && docker-php-ext-install zip
-
-# #imap
-# RUN apt-get update && apt-get install -y libc-client-dev libkrb5-dev && rm -r /var/lib/apt/lists/*
-# RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-#     && docker-php-ext-install imap
-
-# #imagick
-# RUN apt-get update && apt-get install -y \
-#     libmagickwand-dev --no-install-recommends \
-#     && pecl install imagick \
-#     && docker-php-ext-enable imagick
-
-# RUN git clone https://github.com/nikic/php-ast.git && \
-#     cd php-ast && \
-#     phpize && \
-#     ./configure --enable-ast && \
-#     make install && \
-#     docker-php-ext-enable ast
-
 RUN apt-get update && \
     apt-get install -y \
-    nodejs 
-#     libfreetype6-dev \
-#     libwebp-dev \
-#     libjpeg62-turbo-dev \
-#     libpng-dev \
-#     nano \
-#     libgmp-dev \
-#     libldap2-dev \
-#     netcat \
-#     sqlite3 \
-#     libsqlite3-dev && \
-# && docker-php-ext-install pdo pdo_mysql pdo_sqlite zip
+    nodejs yarn ca-certificates  \
+    # unzip libzip-dev zip \
+    # && docker-php-ext-install pdo pdo_mysql zip
+    && docker-php-ext-install pdo pdo_mysql
 
-# Install composer
+# Install & Configure php extensions
+RUN docker-php-ext-configure intl && docker-php-ext-install intl pdo_mysql pdo opcache 
+
+# Install Composer globally
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php && php -r "unlink('composer-setup.php');" && mv composer.phar /usr/local/bin/composer
 
 WORKDIR /var/www
 

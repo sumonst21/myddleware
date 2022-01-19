@@ -35,4 +35,4 @@ WORKDIR /var/www/html
 # install node_modules (javascript)
 RUN yarn install
 
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

@@ -36,3 +36,5 @@ WORKDIR /var/www/html
 RUN yarn install
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# CMD ["php"]

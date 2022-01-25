@@ -27,11 +27,12 @@ else
     then
         echo "Argument required"
     else
-        php
+        php -a
     fi
 fi
 
 composer install
 composer update symfony/flex
 php bin/console doctrine:schema:update --force
-php
+# pwd
+php -a

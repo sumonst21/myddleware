@@ -27,12 +27,21 @@ else
     then
         echo "Argument required"
     else
-        php -a
+        php
     fi
 fi
 
 composer install
 composer update symfony/flex
+# php bin/console doctrine:database:create
 php bin/console doctrine:schema:update --force
+yarn install
+yarn build
+# ls -a
+# php public/index.php 
+
+# while true; do sleep 1; done
 # pwd
-php -a
+# php -a
+# command tail -f /dev/null
+# command > /dev/null 2>&1

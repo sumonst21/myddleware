@@ -1,10 +1,12 @@
 version: "3.0"
 services:
-  php-fpm:
+  myd-php:
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
     container_name: ${APP_NAME}_php
+    ports:
+      - "${EXTERNAL_PORT:-8020}:80"
     volumes: 
       - ./:/var/www/html
     depends_on:
@@ -14,19 +16,19 @@ services:
     networks:
       - myd3
 
-  apache:
-    build: 
-      context: .
-      dockerfile: ./docker/apache/Dockerfile
-    depends_on:
-      - php-fpm
-      - database
-    ports:
-      - "${EXTERNAL_PORT:-8020}:80"
-    volumes:
-      - ./:/var/www/html
-    networks:
-    - myd3
+  # apache:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./docker/apache/Dockerfile
+  #   depends_on:
+  #     - myd-php
+  #     - database
+  #   ports:
+  #     - "${EXTERNAL_PORT:-8020}:80"
+  #   volumes:
+  #     - ./:/var/www/html
+  #   networks:
+  #   - myd3
   database:
     build:
       context: ./docker/db

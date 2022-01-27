@@ -1955,7 +1955,7 @@ class documentcore {
 											Document.global_status = 'Close' 
 										 OR Document.status = 'No_send'
 									)
-								ORDER BY source_date_modified DESC	
+								ORDER BY date_created DESC	
 								LIMIT 1";	
 			}
 			elseif ($direction == '1') {
@@ -1973,7 +1973,7 @@ class documentcore {
 											Document.global_status = 'Close' 
 										 OR Document.status = 'No_send'
 									)	
-								ORDER BY source_date_modified DESC		
+								ORDER BY date_created DESC		
 								LIMIT 1";	
 			}
 			else {

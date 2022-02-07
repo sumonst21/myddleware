@@ -132,6 +132,11 @@ class User implements UserInterface, Serializable
     protected $timezone;
 
     /**
+     * @ORM\Column(name="newsletters", type="boolean", options={"default":0})
+     */
+    protected $newsletter;
+    
+    /**
      * User constructor.
      */
     public function __construct()
@@ -320,8 +325,17 @@ class User implements UserInterface, Serializable
      */
     public function getTimezone()
     {
-
         return $this->timezone;
+    }
+
+    /**
+     * Get newsletter.
+     *
+     * @return int
+     */
+    public function getNewsletter()
+    {
+        return $this->newsletter;
     }
     /**
      * {@inheritdoc}
@@ -555,4 +569,19 @@ class User implements UserInterface, Serializable
     {
         return (string) $this->getUsername();
     }  
+
+    
+    /**
+     * Set newsletter.
+     *
+     * @param int $newsletter
+     *
+     * @return Rule
+     */
+    public function setNewsletter($newsletter)
+    {
+        $this->newsletter = $newsletter;
+
+        return $this;
+    }
 }

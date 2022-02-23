@@ -12,7 +12,6 @@ use Swift_SmtpTransport;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -90,7 +89,7 @@ class ManagementSMTPController extends AbstractController
     }
 
     /**
-     * Creates a form to create a JobScheduler entity.
+     * Creates a form to generate SMTP config
      *
      * @return Form The form
      */
@@ -172,7 +171,7 @@ class ManagementSMTPController extends AbstractController
             $mailerUrl = "MAILER_URL=$transport://$host:$port?encryption=$encryption&auth_mode=$auth_mode&username=$user&password=$password";
             // for now we send it at the end of the file but if the operation is repeated multiple times, it will write multiple lines
             // TODO: find a way to check whether the variable is already set & if so overwrite it
-            file_put_contents(self::LOCAL_ENV_FILE, $mailerUrl.PHP_EOL, FILE_APPEND|LOCK_EX);
+            file_put_contents(self::LOCAL_ENV_FILE, PHP_EOL.$mailerUrl.PHP_EOL, FILE_APPEND|LOCK_EX);
         } catch (Exception $e) {
             $this->logger->error("Unable to write MAILER_URL in .env.local file : $e->getMessage() on file $e->getFile() line $e->getLine()");
             $session = new Session();
@@ -180,50 +179,18 @@ class ManagementSMTPController extends AbstractController
         }
     }
 
-    /**
-     * Send mail for test configuration in the parameters_smtp.yml.
-     *
-     * @return RedirectResponse
-     *
-     * @throws Exception
-     *
-     * @param mixed $form
-     */
-    public function testMailConfiguration($form)
-    {
-        $host = $form->get('host')->getData();
-        $port = $form->get('port')->getData();
-        $user = $form->get('user')->getData();
-        $auth_mode = $form->get('auth_mode')->getData();
-        $encryption = $form->get('encryption')->getData();
-        $password = $form->get('password')->getData();
-        $user_email = $this->getUser()->getEmail();
-        if ('sendmail' == $form->get('transport')->getData()) {
-            // Create the Transport for sendmail
-            $transport = new Swift_SendmailTransport();
-        } else {
-            // Create the Transport for gmail and smtp
-            $transport = new Swift_SmtpTransport($host, $port);
-            if (!empty($user)) {
-                $transport->setUsername($user);
-                $transport->setPassword($password);
-            }
-            if (!empty($auth_mode)) {
-                $transport->setAuthMode($auth_mode);
-            }
-            if (!empty($encryption)) {
-                $transport->setEncryption($encryption);
-            }
-        }
 
-        // Create the Mailer using your created Transport
-        $mailer = new Swift_Mailer($transport);
-        $subject = $this->translator->trans('management_smtp_sendmail.subject');
+
+    /**
+     * Sends an email using the parameters defined in the Mailer (transport, host, auth, ...)
+     *
+     * @return void
+     */
+    public function sendMail(Swift_Mailer $mailer)
+    {
         try {
-            // Check that we have at least one email address
-            if (empty($user_email)) {
-                throw new Exception('No email address found to send notification. You should have at least one admin user with an email address.');
-            }
+            $user_email = $this->getMyddlewareUserEmail();
+            $subject = $this->translator->trans('management_smtp_sendmail.subject');
             $textMail = $this->translator->trans('management_smtp_sendmail.textMail').chr(10);
             $textMail .= $this->translator->trans('email_notification.best_regards').chr(10).$this->translator->trans('email_notification.signature');
             $message = (new \Swift_Message($subject));
@@ -244,21 +211,127 @@ class ManagementSMTPController extends AbstractController
     }
 
     /**
+     *  Returns the current user's email address
+     * 
+     * @return void
+     */
+    public function getMyddlewareUserEmail()
+    {
+        return $this->getUser()->getEmail();
+    }
+
+    /**
+     * Send mail for test configuration in the parameters_smtp.yml.
+     * TODO: get rid of the form variable and instead pass an array, these functions are too intertwined & difficult to debug / test
+     * @Route("/send_test_mail", name="test_mail",  methods={"POST"})
+     * @throws Exception
+     *
+     * @param mixed $form
+     */
+    public function testMailConfiguration($form)
+    {
+        var_dump($form);
+        $host = $form->get('host')->getData();
+        $port = $form->get('port')->getData();
+        $user = $form->get('user')->getData();
+        $auth_mode = $form->get('auth_mode')->getData();
+        $encryption = $form->get('encryption')->getData();
+        $password = $form->get('password')->getData();
+        $user_email = $this->getMyddlewareUserEmail();
+        // Check that we have at least one email address
+        if (empty($user_email)) {
+            throw new Exception('No email address found to send notification. You should have at least one admin user with an email address.');
+        }
+        if ('sendmail' == $form->get('transport')->getData()) {
+            // Create the Transport for sendmail
+            $transport = new Swift_SendmailTransport();
+        } else {
+            // Create the Transport for gmail and smtp
+            $transport = new Swift_SmtpTransport($host, $port);
+            if (!empty($user)) {
+                $transport->setUsername($user);
+                $transport->setPassword($password);
+            }
+            if (!empty($auth_mode)) {
+                $transport->setAuthMode($auth_mode);
+            }
+            if (!empty($encryption)) {
+                $transport->setEncryption($encryption);
+            }
+        }
+        // Create the Mailer using your created Transport
+        $mailer = new Swift_Mailer($transport);
+        $this->sendMail($mailer);
+    }
+
+
+    /**
+     * @Route("/sendmail", name="sendmail")
+     *
+     * @param [type] $name
+     * @param \Swift_Mailer $mailer
+     * @return void
+     */
+    // public function index($name, \Swift_Mailer $mailer)
+    // {
+    //     $message = (new \Swift_Message('Hello Email'))
+    //     ->setFrom('send@example.com')
+    //     ->setTo('estellegaits@myddleware.com')
+    //     ->setBody(
+    //         $this->renderView(
+    //             // templates/emails/registration.html.twig
+    //             'emails/registration.html.twig',
+    //             ['name' => $name]
+    //         ),
+    //         'text/html'
+    //     )
+
+    //     // you can remove the following code if you don't define a text version for your emails
+    //     ->addPart(
+    //         $this->renderView(
+    //             // templates/emails/registration.txt.twig
+    //             'emails/registration.txt.twig',
+    //             ['name' => $name]
+    //         ),
+    //         'text/plain'
+    //     )
+    //     ;
+
+    //     $mailer->send($message);
+    //         return $mailer;
+    //     // return $this->render();
+    // }
+
+    /**
      * TODO: refactor so that the sendmail code from the above function
      *  is decoupled from the config part 
      *
-     * @return void
+     * @Route("/email", name="sendmail")
      */
-    public function sendEmail($name, \Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('send@example.com')
-            ->setTo('recipient@example.com')
-            ->setBody('You should see me from the profiler!')
-        ;
+    // public function sendEmail(MailerInterface $mailer, $appEmail, $publicDir)
+    // {
+        // $email = (new TemplatedEmail())
+        //             ->from($appEmail)
+        //             ->to(new Address('email@example.com', 'Estelle'))
+        //             ->subject('This is a test email')
+        //             ->textTemplate('emails/order-confirmation.txt.twig')
+        //             ->htmlTemplate('emails/order-confirmation.html.twig')
+        //             ->attachFromPath($publicDir . '/pdf/example-invoice.pdf')
+        //             ->context([
+        //                 'delivery_date' => date_create('+3 days'),
+        //                 'order_number' => rand(5, 50000)
+        //             ]);
+        // $mailer->send($email);
+        // return new Response('Email sent');
+
+        // $message = (new \Swift_Message('Hello Email'))
+        //     ->setFrom('send@example.com')
+        //     ->setTo('recipient@example.com')
+        //     ->setBody('You should see me from the profiler!')
+        // ;
     
-        $mailer->send($message);
+        // $mailer->send($message);
     
-        // ...
-    }
+        // // ...
+    // }
 }

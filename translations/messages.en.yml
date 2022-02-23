@@ -260,7 +260,7 @@ create_connector:
     upload_btn: Upload
     upload_error: The file could not be saved on the server
     upload_error_ext: Extension not allowed
-    upload_success: The file has been successfully upload
+    upload_success: The file has been successfully uploaded
     upload_delete: Deleting file
     params_error: An error occurred while saving the settings
     form_error : Cannot get connector data (solution, fields & parent) 
@@ -703,7 +703,7 @@ messages:
 email_notification:
     subject: Myddleware notification
     hello: Hi, 
-    introduction: "Here the statistics about your data transfers with Myddleware: "
+    introduction: "Here are the statistics about your data transfers with Myddleware: "
     transfer_success: "- Documents successfully sent: "
     transfer_error: "- Documents in error: "
     transfer_open: "- Documents still open:"
@@ -765,7 +765,7 @@ management_smtp:
     title : SMTP Management
     description : 'Here, you can configure email parameters. More info here : <a href="https://symfony.com/doc/4.4/email.html" target=_blank>https://symfony.com/doc/4.4/email.html</a>'
     sendtestmail: Send test mail
-
+    success: The test email has been succesfully sent.
 management_smtp_sendmail:
     subject: Myddleware - email configuration test
     textMail: This test message has been sent by Myddleware.

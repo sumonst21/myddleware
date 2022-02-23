@@ -196,17 +196,21 @@ class ManagementSMTPController extends AbstractController
             $message = (new \Swift_Message($subject));
             $message
                 ->setFrom((!empty($this->getParameter('email_from')) ? $this->getParameter('email_from') : 'no-reply@myddleware.com'))
-                ->setBody($textMail);
-            $message->setTo($user_email);
+                ->setBody($textMail)
+                ->setTo($user_email);
             $send = $mailer->send($message);
             if (!$send) {
                 $this->logger->error('Failed to send email : '.$textMail.' to '.$user_email);
                 throw new Exception('Failed to send email : '.$textMail.' to '.$user_email);
             }
+            $session = new Session();
+            $session->set('success', [$this->translator->trans('management_smtp.success')]);
+            return $send;
         } catch (Exception $e) {
             $error = 'Error : '.$e->getMessage().' '.$e->getFile().' Line : ( '.$e->getLine().' )';
             $session = new Session();
             $session->set('error', [$error]);
+            return $error;
         }
     }
 
@@ -230,7 +234,6 @@ class ManagementSMTPController extends AbstractController
      */
     public function testMailConfiguration($form)
     {
-        var_dump($form);
         $host = $form->get('host')->getData();
         $port = $form->get('port')->getData();
         $user = $form->get('user')->getData();

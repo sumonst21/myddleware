@@ -767,7 +767,7 @@ management_smtp:
     title : Configuration SMTP
     description : "Vous pouvez configurez l'envoi des emails ici. Vous trouverez de la documentation ici : <a href='https://symfony.com/doc/4.4/email.html' target=_blank>https://symfony.com/doc/4.4/email.html</a>"
     sendtestmail: Envoyer un email de test
-
+    success: L'email de test a été envoyé avec succès.
 management_smtp_sendmail:
     subject: Myddleware - Test de configuration email
     textMail: Ce message de test a été envoyé par Myddleware. 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "488afbbc49cee9ce33782f21b2cf08bf",
+    "content-hash": "cfd886e02eb20d6cd50b48b0145adcf6",
     "packages": [
         {
             "name": "api-platform/core",
@@ -698,111 +698,6 @@
                 }
             ],
             "time": "2022-01-04T17:06:45+00:00"
-        },
-        {
-            "name": "cron/cron",
-            "version": "1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Cron/Cron.git",
-                "reference": "103d8562aca8a5fd135c69b3fe93aad0b5b701d4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Cron/Cron/zipball/103d8562aca8a5fd135c69b3fe93aad0b5b701d4",
-                "reference": "103d8562aca8a5fd135c69b3fe93aad0b5b701d4",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0",
-                "symfony/process": "^4.0|^5.0|^6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0 || ^9.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Cron\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Dries De Peuter",
-                    "email": "dries@nousefreak.be"
-                }
-            ],
-            "description": "Cronjobs",
-            "support": {
-                "issues": "https://github.com/Cron/Cron/issues",
-                "source": "https://github.com/Cron/Cron/tree/1.6.0"
-            },
-            "time": "2021-12-29T12:06:58+00:00"
-        },
-        {
-            "name": "cron/cron-bundle",
-            "version": "2.10.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Cron/Symfony-Bundle.git",
-                "reference": "8cc586d019d28ace0970c4677580071849c48ead"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Cron/Symfony-Bundle/zipball/8cc586d019d28ace0970c4677580071849c48ead",
-                "reference": "8cc586d019d28ace0970c4677580071849c48ead",
-                "shasum": ""
-            },
-            "require": {
-                "cron/cron": "^1.0.1",
-                "doctrine/doctrine-bundle": "~1.4|~2.0",
-                "doctrine/orm": "~2.4,>=2.4.5",
-                "php": ">=7.2",
-                "symfony/framework-bundle": "^3.4|^4.4|^5.0|^6.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0",
-                "symfony/symfony": "^3.0|^4.0|^5.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Cron\\CronBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Dries De Peuter",
-                    "email": "dries@nousefreak.be"
-                }
-            ],
-            "description": "Symfony cron",
-            "support": {
-                "issues": "https://github.com/Cron/Symfony-Bundle/issues",
-                "source": "https://github.com/Cron/Symfony-Bundle/tree/2.10.3"
-            },
-            "time": "2022-02-01T07:59:50+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1610,8 +1505,8 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector",
-                    "Doctrine\\Inflector\\": "lib/Doctrine/Inflector"
+                    "Doctrine\\Inflector\\": "lib/Doctrine/Inflector",
+                    "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2740,12 +2635,12 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "GuzzleHttp\\Promise\\": "src/"
-                },
                 "files": [
                     "src/functions_include.php"
-                ]
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -8202,16 +8097,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.11",
+            "version": "9.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "665a1ac0a763c51afc30d6d130dac0813092b17f"
+                "reference": "c011a0b6aaa4acd2f39b7f51fb4ad4442b6ec631"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/665a1ac0a763c51afc30d6d130dac0813092b17f",
-                "reference": "665a1ac0a763c51afc30d6d130dac0813092b17f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c011a0b6aaa4acd2f39b7f51fb4ad4442b6ec631",
+                "reference": "c011a0b6aaa4acd2f39b7f51fb4ad4442b6ec631",
                 "shasum": ""
             },
             "require": {
@@ -8267,7 +8162,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.11"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.12"
             },
             "funding": [
                 {
@@ -8275,7 +8170,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-18T12:46:09+00:00"
+            "time": "2022-02-23T06:30:26+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -8520,16 +8415,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.14",
+            "version": "9.5.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1883687169c017d6ae37c58883ca3994cfc34189"
+                "reference": "dc738383c519243b0a967f63943a848d3fd861aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1883687169c017d6ae37c58883ca3994cfc34189",
-                "reference": "1883687169c017d6ae37c58883ca3994cfc34189",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/dc738383c519243b0a967f63943a848d3fd861aa",
+                "reference": "dc738383c519243b0a967f63943a848d3fd861aa",
                 "shasum": ""
             },
             "require": {
@@ -8545,7 +8440,7 @@
                 "phar-io/version": "^3.0.2",
                 "php": ">=7.3",
                 "phpspec/prophecy": "^1.12.1",
-                "phpunit/php-code-coverage": "^9.2.7",
+                "phpunit/php-code-coverage": "^9.2.12",
                 "phpunit/php-file-iterator": "^3.0.5",
                 "phpunit/php-invoker": "^3.1.1",
                 "phpunit/php-text-template": "^2.0.3",
@@ -8607,7 +8502,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.14"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.15"
             },
             "funding": [
                 {
@@ -8619,7 +8514,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-02-18T12:54:07+00:00"
+            "time": "2022-02-23T08:53:20+00:00"
         },
         {
             "name": "sebastian/cli-parser",
